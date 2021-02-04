@@ -36,6 +36,7 @@ from datetime import date
 import googlemaps
 import threading
 import schedule
+import config
 
 # 0 being off 1 being on as in true/false
 Config.set('graphics', 'resizable', '0')
@@ -46,7 +47,7 @@ LabelBase.register(name="HeaderLight",
                    fn_regular="aileron/Aileron-UltraLight.otf")
 LabelBase.register(name="HeaderMed", fn_regular="aileron/Aileron-Light.otf")
 
-gmaps = googlemaps.Client(key='AIzaSyDbLrK0QmNZJ_ESIDMtzUVeEtnX6i9ReaM')
+gmaps = googlemaps.Client(key=config.api_key)
 weatherObject = WeatherScript()
 
 class PPButton(ToggleButtonBehavior, Image):
