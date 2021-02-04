@@ -1,0 +1,657 @@
+#: import NoTransition kivy.uix.screenmanager.NoTransition
+#: import hex kivy.utils.get_color_from_hex
+#:import MapView kivy_garden.mapview
+#:import MapSource kivy_garden.mapview
+#:import MapMarker kivy_garden.mapview
+#: import MapPage MapPage
+#: import ForecastViewer ForecastView
+#: include ForecastView.kv
+#: include MapPage.kv
+
+<AppLayout>:
+    size: root.width, root.height
+    TabSection:
+        id: tabBar
+    BottomBar:
+
+<Spacer@Widget>:
+    size_hint_x: None
+    width: 10
+
+<ScrollLabel>:
+    Label:
+        size_hint_x: None
+        halign: 'center'
+        text: root.text
+        width: self.texture_size[0]
+        font_name: "HeaderLight"
+        font_size: 40
+
+<MusicTab>:
+    songProgress: progressBar
+    ppBut2: playpause2
+    canvas.before:
+        PushMatrix
+        Rotate:
+            angle: -90
+            axis: 0,0,1
+            origin: self.center
+    canvas.after:
+        PopMatrix
+    canvas:
+        Rectangle:
+            source: 'iconFolder/tabImages/musicTab.png'
+            size: 67, 67
+            pos: self.pos[0] + 15, self.pos[1]
+
+    FloatLayout:
+        size: root.width, root.height
+
+        Image:
+            source: 'Screens/musicTab.png'
+            pos_hint: {"x": 0, "y": 0.08}
+            size_hint: 1, 1
+
+        ScrollLabel:
+            id: titleLabel
+            srcoll_y: -1
+            text: root.title
+            pos_hint: {"center_x": 0.78, "center_y": 0.84}
+
+        Label:
+            id: artistLabel
+            text: root.artist
+            font_name: "HeaderLight"
+            font_size: 30
+            pos_hint: {"center_x": 0.68, "center_y": 0.76}
+
+        PPButton:
+            id: playpause2
+            nocache: True
+            pos_hint: {"x": 0.63, "y": 0.5}
+            size_hint: 0.1, 0.1
+
+        Button:
+            pos_hint: {"x": 0.46, "y": 0.5}
+            size_hint: 0.07, 0.1
+            background_normal: ''
+            background_color: 1, 0, 0, 0
+            on_release: root.prevSong()
+
+        Button:
+            pos_hint: {"x": 0.82, "y": 0.5}
+            size_hint: 0.07, 0.1
+            background_normal: ''
+            background_color: 0, 1, 0, 0
+            on_release: root.nextSong()
+
+        Label:
+            id: songNumber
+            text: root.songNum
+            font_name: "HeaderLight"
+            font_size: 30
+            pos_hint: {"center_x": 0.68, "center_y": 0.69}
+
+        Label:
+            id: songDurationLabel
+            text: root.songDuration
+            font_name: "HeaderLight"
+            font_size: 17
+            pos_hint: {"center_x": 0.88, "center_y": 0.33}
+
+        Label:
+            id: songTimeLabel
+            text: root.songTime
+            font_name: "HeaderLight"
+            font_size: 17
+            pos_hint: {"center_x": 0.12, "center_y": 0.33}
+
+        ProgressBar:
+            id: progressBar
+            pos_hint: {"center_x": 0.5, "center_y": 0.37}
+            size_hint_x: .8
+            max: 10000
+            value: 0
+
+
+<MapsTab>:
+    canvas.before:
+        PushMatrix
+        Rotate:
+            angle: -90
+            axis: 0,0,1
+            origin: self.center
+    canvas.after:
+        PopMatrix
+    canvas:
+        Rectangle:
+            source: 'iconFolder/tabImages/mapsTab.png'
+            size: 67, 67
+            pos: self.pos[0] + 15, self.pos[1]
+
+    FloatLayout:
+        size: root.width, root.height
+
+        MapPage
+
+<WeatherTab>:
+    temp: tempLabel
+    weather: weatherLabel
+    wind: windLabel
+    uv: uvLabel
+    city: cityLabel
+    weatherIcon: weatherIconUrl
+    fLike: feelsLabel
+    sunSetTime: sunSLabel
+    sunRiseTime: sunRLabel
+    pressureLabel: pressLabel
+    humidityLabel: humLabel
+    foreBox: forecastsBox
+    hourlyBut: hourly
+    dailyBut: daily
+
+    canvas.before:
+        PushMatrix
+        Rotate:
+            angle: -90
+            axis: 0,0,1
+            origin: self.center
+    canvas.after:
+        PopMatrix
+    canvas:
+        Rectangle:
+            source: 'iconFolder/tabImages/weatherTab.png'
+            size: 67, 67
+            pos: self.pos[0] + 15, self.pos[1]
+    FloatLayout:
+        size: root.width, root.height
+
+        Image:
+            source: 'Screens/blank.png'
+            pos_hint: {"x": 0, "y": 0.08}
+            size_hint: 1, 1
+
+        AsyncImage:
+            id: weatherIconUrl
+            source: "http://openweathermap.org/img/wn/10d@2x.png"
+            pos_hint: {"x": 0.03, "y": 0.75}
+            size_hint: 0.2, 0.2
+
+        BoxLayout:
+            size_hint: 0.22, 0.2
+            pos_hint: {"x": 0.28, "y": 0.75}
+            orientation: 'horizontal'
+            spacing: 25
+            Label:
+                id: tempLabel
+                text: "78"
+                font_name: "HeaderMed"
+                font_size: 70
+                # pos_hint: {"center_x": 0.82, "center_y": 0.79}
+
+            BoxLayout:
+                size_hint: 0.25, 0.8
+                pos_hint: {"top": 1, "right": 0.99}
+                orientation: 'vertical'
+
+                Widget:
+
+                Label:
+                    text: "°F"
+                    font_name: "HeaderMed"
+                    font_size: 30
+
+            Widget:
+
+        Label:
+            id: cityLabel
+            text: "Macon, GA"
+            font_name: "HeaderLight"
+            font_size: 18
+            pos_hint: {"center_x": 0.125, "center_y": 0.67}
+
+        Label:
+            id: weatherLabel
+    		size_hint_y: None
+            size_hint_x: 0.15
+        	text_size: self.width, None
+        	height: self.texture_size[1]
+    		halign: 'center'
+            text: "Partly Cloudy"
+            font_name: "HeaderLight"
+            font_size: 18
+            pos_hint: {"center_x": 0.13, "center_y": 0.73}
+
+        Label:
+            id: feelsLabel
+            text: "Feels Like: "
+            font_name: "HeaderLight"
+            font_size: 18
+            pos_hint: {"center_x": 0.33, "center_y": 0.73}
+
+        GridLayout:
+            cols: 2
+            pos_hint: {"center_x": 0.15, "center_y": 0.41}
+            size_hint: 0.37, 0.4
+
+            BoxLayout:
+                orientation: 'vertical'
+                Label:
+                    text: "Sunrise Time"
+                    font_name: "HeaderMed"
+                    font_size: 18
+                    pos_hint: {"center_x": 0.93, "center_y": 0.34}
+
+                Label:
+                    id: sunRLabel
+                    text: "6:00"
+                    font_name: "HeaderLight"
+                    font_size: 18
+                    pos_hint: {"center_x": 0.93, "center_y": 0.34}
+
+            BoxLayout:
+                orientation: 'vertical'
+                Label:
+                    text: "Sunset Time"
+                    font_name: "HeaderMed"
+                    font_size: 18
+                    pos_hint: {"center_x": 0.93, "center_y": 0.34}
+
+                Label:
+                    id: sunSLabel
+                    text: "6:00"
+                    font_name: "HeaderLight"
+                    font_size: 18
+                    pos_hint: {"center_x": 0.93, "center_y": 0.34}
+
+            BoxLayout:
+                orientation: 'vertical'
+                Label:
+                    text: "Pressure"
+                    font_name: "HeaderMed"
+                    font_size: 18
+                    pos_hint: {"center_x": 0.93, "center_y": 0.34}
+
+                Label:
+                    id: pressLabel
+                    text: "6 atm"
+                    font_name: "HeaderLight"
+                    font_size: 18
+                    pos_hint: {"center_x": 0.93, "center_y": 0.34}
+
+            BoxLayout:
+                orientation: 'vertical'
+                Label:
+                    text: "Humidity"
+                    font_name: "HeaderMed"
+                    font_size: 18
+                    pos_hint: {"center_x": 0.93, "center_y": 0.34}
+
+                Label:
+                    id: humLabel
+                    text: "6 %"
+                    font_name: "HeaderLight"
+                    font_size: 18
+                    pos_hint: {"center_x": 0.93, "center_y": 0.34}
+
+            BoxLayout:
+                orientation: 'vertical'
+                Label:
+                    text: "Wind Speed"
+                    font_name: "HeaderMed"
+                    font_size: 18
+                    pos_hint: {"center_x": 0.93, "center_y": 0.43}
+
+                Label:
+                    id: windLabel
+                    text: "14 mph"
+                    font_name: "HeaderLight"
+                    font_size: 18
+                    pos_hint: {"center_x": 0.93, "center_y": 0.43}
+
+            BoxLayout:
+                orientation: 'vertical'
+                Label:
+                    text: "UV Index"
+                    font_name: "HeaderMed"
+                    font_size: 18
+                    pos_hint: {"center_x": 0.93, "center_y": 0.34}
+
+                Label:
+                    id: uvLabel
+                    text: "6"
+                    font_name: "HeaderLight"
+                    font_size: 18
+                    pos_hint: {"center_x": 0.93, "center_y": 0.34}
+
+        ForecastViewer:
+            id: fV
+            orientation: 'vertical'
+            pos_hint: {"center_x": 0.7, "top": 0.92}
+            size_hint: 0.5, 0.7
+
+            BoxLayout:
+                orientation: 'horizontal'
+                pos_hint: {"center_x": 0.5, "top": 1}
+                size_hint: .7, .1
+                ToggleButton:
+                    id: hourly
+                    text: 'Hourly'
+                    group: 'forecast'
+                    state: 'down'
+                    on_state: root.changeForecast()
+
+                ToggleButton:
+                    id: daily
+                    text: 'Daily'
+                    group: 'forecast'
+                    on_state: root.changeForecast()
+
+            BoxLayout:
+                id: forecastsBox
+                orientation: 'vertical'
+
+
+<SettingsTab>:
+    canvas.before:
+        PushMatrix
+        Rotate:
+            angle: -90
+            axis: 0,0,1
+            origin: self.center
+    canvas.after:
+        PopMatrix
+    canvas:
+        Rectangle:
+            source: 'iconFolder/tabImages/cameraTab.png'
+            size: 60, 67
+            pos: self.pos[0] + 15, self.pos[1]
+    name: 'camera'
+    orientation: 'vertical'
+    FloatLayout:
+        size: root.width, root.height
+        Camera:
+            id: camera
+            pos_hint: {"x": 0, "y": 0.08}
+            resolution: (640, 480)
+            play: True
+        # ToggleButton:
+        #     text: "Play"
+        #     on_press: camera.play = not camera.play
+        #     size_hint_y: None
+        #     height: '48dp'
+
+
+<HomeTab>:
+    canvas.before:
+        PushMatrix
+        Rotate:
+            angle: -90
+            axis: 0,0,1
+            origin: self.center
+    canvas.after:
+        PopMatrix
+    canvas:
+        Rectangle:
+            source: 'iconFolder/png/006-home-run.png'
+            size: 30, 30
+            pos: self.pos[0] + 32, self.pos[1] + 15
+
+    temp: tempLabel
+    weather: weatherLabel
+    wind: windLabel
+    uv: uvLabel
+    city: cityLabel
+    weatherIcon: weatherIconUrl
+
+    FloatLayout:
+        size: root.width, root.height
+
+        Image:
+            source: 'Screens/home.png'
+            pos_hint: {"x": 0, "y": 0.08}
+            size_hint: 1, 1
+
+        Button:
+            pos_hint: {"x": 0.04, "y": 0.27}
+            size_hint: 0.29, 0.7
+            background_normal: ''
+            background_color: 1, 0, 0, 0
+            on_release: app.root.ids.tabBar.switch_to(app.root.ids.tabBar.tab_list[0])
+
+        Button:
+            pos_hint: {"x": 0.35, "y": 0.18}
+            size_hint: 0.29, 0.79
+            background_normal: ''
+            background_color: 1, 0, 0, 0
+            on_release: app.root.ids.tabBar.switch_to(app.root.ids.tabBar.tab_list[1])
+
+        Button:
+            pos_hint: {"x": 0.67, "y": 0.18}
+            size_hint: 0.29, 0.79
+            background_normal: ''
+            background_color: 1, 0, 0, 0
+            on_release: app.root.ids.tabBar.switch_to(app.root.ids.tabBar.tab_list[2])
+
+        AsyncImage:
+            id: weatherIconUrl
+            source: "http://openweathermap.org/img/wn/10d@2x.png"
+            pos_hint: {"x": 0.64, "y": 0.56}
+            size_hint: 0.18, 0.18
+
+        PPButton:
+            id: playpause
+            state: root.ppBut
+            nocache: True
+            pos_hint: {"x": 0.155, "y": 0.29}
+            size_hint: 0.07, 0.07
+
+        Button:
+            pos_hint: {"x": 0.26, "y": 0.28}
+            size_hint: 0.05, 0.09
+            background_normal: ''
+            background_color: 1, 0, 0, 0
+            on_release: root.nextSong()
+
+        Button:
+            pos_hint: {"x": 0.07, "y": 0.28}
+            size_hint: 0.05, 0.09
+            background_normal: ''
+            background_color: 0, 1, 0, 0
+            on_release: root.prevSong()
+
+        Label:
+            id: titleL
+            text: root.title
+            font_name: "HeaderMed"
+            font_size: 23
+            pos_hint: {"center_x": 0.19, "center_y": 0.52}
+
+        Label:
+            id: artistLabel
+            text: root.artist
+            font_name: "HeaderLight"
+            font_size: 20
+            pos_hint: {"center_x": 0.19, "center_y": 0.47}
+
+        MapView:
+        	id: mapview
+        	pos_hint: {"x": 0.35, "y": 0.37}
+        	size_hint: .3, .45
+        	background_color: 0, 0, 0, 1
+        	zoom: 18
+        	lat: 34.1765
+        	lon: -84.5191
+        	map_source: MapSource.MapSource(cache_key='cartodb-darkmatter', url='https://api.mapbox.com/styles/v1/mapbox/dark-v10/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1Ijoibm9sYW5kb25sZXkxNCIsImEiOiJjazJta2dqNmowaXR2M25uM3RyNzl4bmU1In0.IG-7dVSFafe9cSEpQJoU2A', attribution='')
+
+            MapMarker:
+            	lat: 34.1765
+            	lon: -84.5191
+                source: 'iconFolder/carTopBlack.png'
+
+        Label:
+            id: weatherLabel
+    		size_hint_y: None
+            size_hint_x: 0.15
+        	text_size: self.width, None
+        	height: self.texture_size[1]
+    		halign: 'center'
+            text: "Partly Cloudy"
+            font_name: "HeaderLight"
+            font_size: 18
+            pos_hint: {"center_x": 0.84, "center_y": 0.65}
+
+        Label:
+            id: windLabel
+            text: "14 mph"
+            font_name: "HeaderLight"
+            font_size: 18
+            pos_hint: {"center_x": 0.93, "center_y": 0.43}
+
+        Label:
+            id: uvLabel
+            text: "6"
+            font_name: "HeaderLight"
+            font_size: 18
+            pos_hint: {"center_x": 0.93, "center_y": 0.34}
+
+        Label:
+            id: cityLabel
+            text: "Macon, GA"
+            font_name: "HeaderLight"
+            font_size: 18
+            pos_hint: {"center_x": 0.74, "center_y": 0.56}
+
+        BoxLayout:
+            size_hint: 0.22, 0.2
+            pos_hint: {"top": 0.9, "right": 0.93}
+            orientation: 'horizontal'
+            spacing: 20
+            Label:
+                id: tempLabel
+                text: "78"
+                font_name: "HeaderMed"
+                font_size: 70
+                # pos_hint: {"center_x": 0.82, "center_y": 0.79}
+
+            BoxLayout:
+                size_hint: 0.3, 0.8
+                pos_hint: {"top": 1, "right": 1}
+                orientation: 'vertical'
+
+                Widget:
+
+                Label:
+                    text: "°F"
+                    font_name: "HeaderMed"
+                    font_size: 30
+
+            Widget:
+
+<TabbedPanelStrip>
+    canvas:
+        Color:
+            rgba: hex('#090807')
+        Rectangle:
+            size: self.size
+            pos: self.pos
+
+<TabSection>:
+    size_hint: 1, 1
+    pos_hint: {'center_x': .5, 'center_y': .5}
+    tab_pos: 'left_top'
+    tab_height: 83
+    tab_width: self.size[1]/len(self.tab_list)
+    do_default_tab: False
+    strip_border: 0, 0, 0, 0
+    background_color: 0, 0, 0, 1
+
+    HomeTab:
+        id: HomeTab
+        background_color: 0, 0, 0, 0
+
+    SettingsTab:
+        id: SettingsTab
+        background_color: 0, 0, 0, 0
+
+    WeatherTab:
+        id: WeatherTab
+        background_color: 0, 0, 0, 0
+
+    MapsTab:
+        id: MapsTab
+        background_color: 0, 0, 0, 0
+
+    MusicTab:
+        id: MusicTab
+        background_color: 0, 0, 0, 0
+
+<BottomBar>:
+    time: timeLabel
+    size_hint: 0.91, 0.14
+    pos_hint: {"bottom": 1, "right": 1}
+    cols: 5
+    orientation: 'horizontal'
+    canvas:
+        Color:
+            rgba: hex('#090807')
+        Rectangle:
+            size: self.size
+            pos: self.pos
+
+    Widget:
+        width: 20
+        size_hint_x: None
+
+    AnchorLayout:
+        anchor_y: 'center'
+        anchor_x: 'left'
+        Image:
+            source: 'iconFolder/png/004-pixel.png'
+            pos_hint: {'center_y': .5}
+            size: 30, 30
+            size_hint_x: None
+            size_hint_y: None
+
+    Label:
+        id: timeLabel
+        text: "Time"
+        font_name: "HeaderLight"
+        font_size: 30
+        pos_hint: {'center_y': 0.5}
+
+    AnchorLayout:
+        anchor_y: 'center'
+        anchor_x: 'right'
+        Image:
+            source: 'iconFolder/nolanHead.png'
+            pos_hint: {'center_y': .5}
+            size: 35, 35
+            size_hint_x: None
+            size_hint_y: None
+
+    Widget:
+        width: 20
+        size_hint_x: None
+
+<CameraScreen>:
+    name: 'camera'
+    orientation: 'vertical'
+    FloatLayout:
+        size: root.width, root.height
+        Camera:
+            id: camera
+            resolution: (640, 480)
+            play: True
+        ToggleButton:
+            text: "Play"
+            on_press: camera.play = not camera.play
+            size_hint_y: None
+            height: '48dp'
+    Button:
+        pos_hint: {"x": 0, "y": 0}
+        size_hint: .1, .15
+        background_normal: ''
+        background_color: 0, 0, 0, 0
+        on_release:
+            app.root.current = "main"

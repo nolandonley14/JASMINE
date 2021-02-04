@@ -1,0 +1,56 @@
+#:import Page Page
+#:import MapPage MapPage
+#:include Page.kv
+#:include MapPage.kv
+
+
+<Screen>:
+    orientation: 'vertical'
+
+    BoxLayout:
+        orientation: 'horizontal'
+        height: clock.height
+        size_hint_y: None
+
+        canvas.before:
+            Color:
+                rgba: 0.05, 0.05, 0.05, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        Label:
+            text: ''
+            size_hint_x: 1
+            height: self.texture_size[1]
+
+        Label:
+
+            font_size: 11
+            size_hint_x: 1
+            height: self.texture_size[1]
+            markup: True
+			text: '[color=444444]Jasmine[/color]'
+
+        Label:
+            id: clock
+            font_size: 11
+            #size: self.texture_size
+            size_hint_x: 1
+            height: self.texture_size[1]
+            markup: True
+            # TODO: File a bug with Kivy about using format strings:
+            #text: f'{root.now.date().isoformat()} {root.now.time().isoformat("seconds")}[size=10][color=888888].{root.now.microsecond:07}[/color][/size]'
+            #text: '[color=8888ff]{}[/color] {}[size=10][color=888888].{:01}[/color][/size]'.format(root.now.date().isoformat(), root.now.time().isoformat("seconds"), int(root.now.microsecond / 100000))
+            text: '[color=8888ff]{}[/color] {}'.format(root.now.date().isoformat(), root.now.time().isoformat("seconds"))
+            halign: 'right'
+
+    PageLayout:
+        swipe_threshold: .2
+        page: 0
+
+        on_page: root.on_page_changed(self.page)
+
+        Page:
+            title: 'Maps'
+            MapPage
